@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'fantasy_football_website',
+    'rest_framework'
+
 ]
 
 MIDDLEWARE = [
@@ -76,13 +79,17 @@ WSGI_APPLICATION = 'fantasy_football_website.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
         #'NAME': BASE_DIR / 'db.sqlite3',
-        'NAME': 'testSchema',
-        'USER': 'cs41159',
-        'PASSWORD' : '2Tim\'s',
-        'HOST' : '127.0.0.1',
-        'PORT' : '3306'
+        'NAME': 'twotims411_stats',
+        'USER': 'twotims411_admin',
+        #'APITOKEN': 'C7P3GZDP4RUOPB5U2EUCCAF1W91U1YSH',
+        'PASSWORD' : 'finalProject0',
+        'HOST' : 'twotims411.web.illinois.edu',
+        'PORT' : '2083',
+        # 'OPTIONS':{
+        #     'init_command':"SET sql_mode=STRICT_TRANS_TABLES",
+        # }
     }
 }
 
