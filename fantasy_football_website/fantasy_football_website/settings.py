@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'fantasy_football_website',
+    'rest_framework'
+
 ]
 
 MIDDLEWARE = [
@@ -76,13 +79,12 @@ WSGI_APPLICATION = 'fantasy_football_website.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
         #'NAME': BASE_DIR / 'db.sqlite3',
-        'NAME': 'testSchema',
-        'USER': 'cs41159',
-        'PASSWORD' : '2Tim\'s',
-        'HOST' : '127.0.0.1',
-        'PORT' : '3306'
+        'NAME' : 'testdb',
+        'USER' : 'root',
+        'PASSWORD' : '2Tims',
+        'HOST' : 'localhost',
     }
 }
 
