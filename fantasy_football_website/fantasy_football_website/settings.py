@@ -81,15 +81,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         #'NAME': BASE_DIR / 'db.sqlite3',
-        'NAME': 'twotims411_stats',
-        'USER': 'twotims411_admin',
-        #'APITOKEN': 'C7P3GZDP4RUOPB5U2EUCCAF1W91U1YSH',
-        'PASSWORD' : 'finalProject0',
-        'HOST' : 'twotims411.web.illinois.edu',
-        'PORT' : '2083',
-        # 'OPTIONS':{
-        #     'init_command':"SET sql_mode=STRICT_TRANS_TABLES",
-        # }
+        'NAME' : 'testdb',
+        'USER' : 'root',
+        'PASSWORD' : '2Tims',
+        'HOST' : 'localhost',
     }
 }
 
