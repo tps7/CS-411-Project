@@ -1,0 +1,262 @@
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Rushing/Receiving Stats</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <style type="text/css">
+        <style>
+    </style>
+    </style>
+</head>
+<body>
+<form method ="get" novalidate>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-1 col-xs-1 col-sm-1"></div>
+        <div class="col-md-10 col-xs-10 col-sm-10 ">
+            <br />
+            <h6>
+                <font>Search Rushing/Receiving Stats</font>
+            </h6>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1 col-xs-1 col-sm-1"></div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            Player Name:
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            Week:
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            Team:
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            Position:
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1 col-xs-1 col-sm-1"></div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <input type="text" name="player">
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <input type="text" name="week">
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <input type="text" name="team">
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <input type="text" name="position">
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-1 col-xs-1 col-sm-1"></div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+</div>
+</form>
+<br>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-1 col-xs-1 col-sm-1"></div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+
+                <li class="list-group-item ">
+                    <b>Name</b> <span class="badge"></span>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    <b>Week</b>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    <b>Team</b>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    <b>Position</b>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    <b>Rec/Targets</b>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    <b>Rec Yards</b>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    <b>Rec TD</b>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    <b>Rush Att</b>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    <b>Rush Yds</b>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    <b>Rush TD</b>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    <b>Fantasy Pts</b>
+                </li>
+            </ul>
+            <br>
+        </div>
+    </div>
+    {% for rushrec in result %}
+    <div class="row">
+        <div class="col-md-1 col-xs-1 col-sm-1"></div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+
+                <li class="list-group-item ">
+                    <a href="{% url 'rushrec_detail' rushrec.pk %}"> {{ rushrec.player }} </a> <span class="badge"></span>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    Week {{ rushrec.week }}
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    {{ rushrec.team }}
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    {{ rushrec.position }}
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    {{ rushrec.recRec }}/{{rushrec.recTarg}}
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    {{ rushrec.recYds }}
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    {{ rushrec.recTds }}
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    {{ rushrec.rushCarries }}
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    {{ rushrec.rushYds }}
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    {{ rushrec.rushTds }}
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    {{ rushrec.fantasyPts }}
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1"></div>
+    </div>
+    {% endfor %}
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+</html>
