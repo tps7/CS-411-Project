@@ -44,7 +44,7 @@
 {% for d in datas %}
       <tr>
         <th scope="row">{{forloop.counter}}</th>
-        <td><a href ="{% url 'player' parameter=d.player %}">{{d.player}}</a></td>
+        <td><a href ="{% url 'player' d.player %}">{{d.player}}</a></td>
         <td>{{d.position}}</td>
         <td>{{d.yds}}</td>
         <td>{{d.tds}}</td>

@@ -7,6 +7,25 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
+class players(models.Model):
+    name = models.CharField(primary_key=True, max_length=30, blank=False, default='')
+    team = models.CharField(max_length=3)
+    position = models.CharField(max_length=2)
+    fantasypts = models.DecimalField(max_digits=5, decimal_places=2)
+    class Meta:
+        db_table = 'players'
+
+# class Posts(models.Model):
+#     title = models.CharField(max_length=70, blank=False, default='')
+#     content = models.CharField(max_length=200,blank=False, default='')
+#     author = models.CharField(max_length=70, blank=False, default='')
+# class test(models.Model):
+#     title = models.CharField(max_length=70, blank=False, default='')
+#     content = models.CharField(max_length=200,blank=False, default='')
+#     author = models.CharField(max_length=70, blank=False, default='')
+    
+#     class Meta:
+#         app_label = 'players'
 
 class AuthGroup(models.Model):
     name = models.CharField(unique=True, max_length=150)
