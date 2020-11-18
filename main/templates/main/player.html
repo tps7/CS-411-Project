@@ -1,5 +1,28 @@
 {% extends "main/base.html" %}
 {% block content %}
-    <h1> <center> {% for n in name %} {{n}} {%endfor%}</center> </h1>
+    <h1> <center> {% for n in data.Player_Name %} {{n}} {%endfor%}</center> </h1>
+
+    <!-- <table>
+        <tr>
+            {% for key in data.keys %}
+                <th>{{key}}</th>
+            {%endfor%}
+        </tr>
+    </table> -->
+    <p>
+        addfasdf
+        {% for key, value in data.items%}
+            {{key}}aldjf <br>
+            {%for key2,value2 in value.items%}
+                <strong>{{key2}}</strong> <br>
+                {%for key3, value3 in value2.items%}
+                    {{key3}}:{{value3}}
+                {%endfor%}
+                <br>
+            {% endfor %}
+        {% endfor %}
+    <!-- {% for n, w in g.items%} {{n}} {%endfor%} -->
+    </p>
+
 
 {% endblock content %}

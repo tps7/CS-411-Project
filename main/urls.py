@@ -10,6 +10,6 @@ urlpatterns = [
     path('player/<str:pk>', views.player, name='player'),
     path('scoring/', views.scoring, name = 'main-scoring'),
     path('about/', views.about, name = 'main-about'),
-    #path('test/', views.testss)
+    path('test/', views.testss)
 
 ]

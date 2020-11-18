@@ -2,7 +2,13 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from main.models import Week1P
 # from .models import test, Posts
-from .models import players
+from .models import passing_data
+from pymongo import MongoClient
+from mongoengine import *
+
+connect()
+client = MongoClient()
+db = client['ffnosql']
 
 def home(request):
     #return HttpResponse('<h1>Blog Home</h1>')
@@ -21,9 +27,26 @@ def player(request, pk):
     #     #'posts' : Post.objects.all()
     # }
     name = {'name' : pk}
-    print(name['name'])
+    #take any periods out of name so mongodb doesn't go crazy
+    print(type(name))
+    plyer = name['name']
+    collection = db['passing_data']
+    plyer.replace(".", "")
+    data = {}
+
+    M = collection.find({"Player_Name" : plyer}, {"_id" : 0})
+    for d in M:
+        data = d
     #print(data['name'])
-    return render(request, 'main/player.html', name)
+    # data2 = {}
+    # data2['Player_Name'] = 'Tom Brady'
+    # data2['test7'] = 'Hello??'
+    # abc = {'aws' : 555, 'aaa' : 146, 'seven' : 7}
+    # data2['vals'] = abc
+    # q = {}
+    # q['g'] = data2
+    # all_data['data'] = {data}
+    return render(request, 'main/player.html', {'data' : data})
 
 def scoring(request):
     return render(request, 'main/Scoring.html')
@@ -32,12 +55,19 @@ def about(request):
     return render(request, 'main/about.html')
 
 
-# def testss(request):
-#     AllPlayers = players.objects.all()
-#     output = ""
-#     for p in AllPlayers:
-#         output += p.name + "  " + p.team + "  "  + p.position + "  " + p.fantasypts + "<br>"
-#     return HttpResponse(output)
+def testss(request):
+    # AllPlayers = players.objects.all()
+    #AllPlayers = passing_data.objects.all()
+    
+    collection = db['passing_data']
+    data = {}
+    M = collection.find({"Player_Name" : "Tom Brady"})
+    for d in M:
+        data = d
+    output = data["Tom Brady"]['week1'].items()
+    # for p in collection.find({}, {"_id" : 0, "Player_Name" : 1}):
+    #     print(p["Player_Name"])
+    return HttpResponse(output, data)
 
 # def testss(request):
 #     posts=test.objects.using('ffweb').all()

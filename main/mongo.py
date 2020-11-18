@@ -143,12 +143,27 @@ Don't do inside mongodb get the data out put in python and input it into a new t
 #     {"$match" : {"Player_Name" : "Tom Brady", "Tom Brady.week1.team" : "NE"}},
 #     {"$project": {"Tom Brady.week1" : 1} }
 # ])
+M = collection.find({"Player_Name" : "Tom Brady"})
+data = {}
+for d in M:
+    data = d
+print(data.items())
 
-A = collection.find({}, {"_id" : 0, "Player_Name" : 1})
-print(type(A))
-print(A)
-for p in collection.find({}, {"_id" : 0, "Player_Name" : 1}):
-    print(p["Player_Name"])
+output = data["Tom Brady"]['week1']['fantasyPts']
+print(output)
+for key, value in data.items():
+    print(key)
+    # for key2, value2 in value.items():
+    #     print(key2)
+
+
+# A = collection.find({}, {"_id" : 0, "Player_Name" : 1})
+# print(type(A))
+# print(A)
+# for p in collection.find({}, {"_id" : 0, "Player_Name" : 1}):
+    #print(p["Player_Name"])
+# for p in collection.find({""}):
+#     print(p)
     
 
 # from bson.code import Code

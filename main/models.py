@@ -7,13 +7,13 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
-class players(models.Model):
+class passing_data(models.Model):
     name = models.CharField(primary_key=True, max_length=30, blank=False, default='')
     team = models.CharField(max_length=3)
     position = models.CharField(max_length=2)
     fantasypts = models.DecimalField(max_digits=5, decimal_places=2)
     class Meta:
-        db_table = 'players'
+        db_table = 'passing_data'
 
 # class Posts(models.Model):
 #     title = models.CharField(max_length=70, blank=False, default='')

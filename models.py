@@ -8,17 +8,6 @@
 from django.db import models
 
 
-class DjangocrudappPosts(models.Model):
-    post_description = models.CharField()
-    post_title = models.CharField()
-
-    class Meta:
-        managed = False
-        db_table = 'DjangoCrudApp_posts'
-# Unable to inspect table 'Posts'
-# The error was: 'NoneType' object is not subscriptable
-
-
 class AuthGroup(models.Model):
     id = models.TextField(primary_key=True)  # This field type is a guess.
     name = models.CharField(unique=True)
@@ -136,40 +125,9 @@ class DjangoSession(models.Model):
     class Meta:
         managed = False
         db_table = 'django_session'
-
-
-class MainPosts(models.Model):
-    author = models.CharField()
-    content = models.CharField()
-    id = models.TextField(primary_key=True)  # This field type is a guess.
-    title = models.CharField()
-
-    class Meta:
-        managed = False
-        db_table = 'main_posts'
-
-
-class MainWeek1P(models.Model):
-    id = models.TextField(primary_key=True)  # This field type is a guess.
-    player = models.CharField()
-    team = models.CharField()
-    yds = models.TextField()  # This field type is a guess.
-
-    class Meta:
-        managed = False
-        db_table = 'main_week1p'
-# Unable to inspect table 'posts'
+# Unable to inspect table 'flex_data'
 # The error was: 'NoneType' object is not subscriptable
-# Unable to inspect table 'test'
+# Unable to inspect table 'passing_data'
 # The error was: 'NoneType' object is not subscriptable
-
-
-class TutorialsTutorial(models.Model):
-    description = models.CharField()
-    id = models.TextField(primary_key=True)  # This field type is a guess.
-    published = models.TextField()  # This field type is a guess.
-    title = models.CharField()
-
-    class Meta:
-        managed = False
-        db_table = 'tutorials_tutorial'
+# Unable to inspect table 'players'
+# The error was: 'NoneType' object is not subscriptable
