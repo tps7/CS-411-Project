@@ -32,12 +32,12 @@ def about(request):
     return render(request, 'main/about.html')
 
 
-def testss(request):
-    AllPlayers = players.objects.all()
-    output = ""
-    for p in AllPlayers:
-        output += p.name + "  " + p.team + "  "  + p.position + "  " + p.fantasypts + "<br>"
-    return HttpResponse(output)
+# def testss(request):
+#     AllPlayers = players.objects.all()
+#     output = ""
+#     for p in AllPlayers:
+#         output += p.name + "  " + p.team + "  "  + p.position + "  " + p.fantasypts + "<br>"
+#     return HttpResponse(output)
 
 # def testss(request):
 #     posts=test.objects.using('ffweb').all()

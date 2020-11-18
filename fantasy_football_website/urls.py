@@ -20,6 +20,7 @@ from main import views
 
 urlpatterns = [
     path('', views.home, name='main-home'),
+    path('admin/', admin.site.urls),
     #re_path(r'^player/player-(?P<parameter>[\w]+)-.html', views.player, name='player'),
     #re_path(r'player/(?P<parameter>[\w | \W]+)-.html', views.player, name='player'),
     path('player/<str:pk>', views.player, name='player'),

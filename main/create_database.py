@@ -13,7 +13,8 @@ import pymysql
 #         )
 #         print("MySQL Database connection successful")
 #     except Error as err:
-#         print(f"Error: '{err}'")
+#         print(err)
+#         print("Error: '{err}'")
 
 #     return connection
 
@@ -54,10 +55,10 @@ mydb = mysql.connector.connect(
   password="2Tims",
   database="testdb2"
 )
-#cursor = mydb.cursor()
+# cursor = mydb.cursor()
 
-# conn = sqlite3.connect("testdb2.db")
-# c = conn.cursor()
+# conn2 = sqlite3.connect("testdb2.db")
+# c = conn2.cursor()
 
 
 #genral code to parse file
@@ -96,17 +97,22 @@ conn = pymysql.connect( host="localhost",
   database="testdb2")
 
 #run this for week1 passing data
-# stmts = parse_sql('fantasy_football_website/sql files/extra/sqlfiles/fantasy-stats-passing.sql')
+# stmts = parse_sql('sql files/extra/sqlfiles/fantasy-stats-passing.sql')
 # with conn.cursor() as cursor:
 #     for stmt in stmts:
 #         cursor.execute(stmt)
 #     conn.commit()
 
+# c = conn.cursor()
+# c.execute("SELECT * FROM week1p")
+# for row in c:
+#     print(row)
+
 #run for rest of passing data
 # a = '2'
 # for k in range(2, 18):
 #     a = str(k)
-#     stmts = parse_sql("fantasy_football_website/sql files/extra/sqlfiles/fantasy-stats-passing" + a + ".sql")
+#     stmts = parse_sql("sql files/extra/sqlfiles/fantasy-stats-passing" + a + ".sql")
 #     with conn.cursor() as cursor:
 #         for stmt in stmts:
 #             cursor.execute(stmt)
@@ -122,21 +128,21 @@ conn = pymysql.connect( host="localhost",
 
 #run this for week1 rushing data
 
-# stmts = parse_sql('fantasy_football_website/sql files/extra/sqlfiles/fantasy-stats-receiving.sql')
+# stmts = parse_sql('sql files/extra/sqlfiles/fantasy-stats-receiving.sql')
 # with conn.cursor() as cursor:
 #     for stmt in stmts:
 #         cursor.execute(stmt)
 #     conn.commit()
 
 #run for rest of rushing data
-# a = '2'
-# for k in range(2, 18):
-#     a = str(k)
-#     stmts = parse_sql("fantasy_football_website/sql files/extra/sqlfiles/fantasy-stats-receiving" + a + ".sql")
-#     with conn.cursor() as cursor:
-#         for stmt in stmts:
-#             cursor.execute(stmt)
-#         conn.commit()
+a = '2'
+for k in range(2, 18):
+    a = str(k)
+    stmts = parse_sql("sql files/extra/sqlfiles/fantasy-stats-receiving" + a + ".sql")
+    with conn.cursor() as cursor:
+        for stmt in stmts:
+            cursor.execute(stmt)
+        conn.commit()
 
 # c = conn.cursor()
 
