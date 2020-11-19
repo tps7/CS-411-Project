@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework'
 
 ]
+DATABASE_ROUTERS = ['main.router.ffnosqlRouter']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -77,6 +78,8 @@ WSGI_APPLICATION = 'fantasy_football_website.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -85,6 +88,10 @@ DATABASES = {
         'USER' : 'root',
         'PASSWORD' : '2Tims',
         'HOST' : 'localhost',
+    },
+    'ffnosql': {
+        'ENGINE' : 'djongo',
+        'NAME': 'ffnosql'
     }
 }
 

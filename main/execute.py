@@ -30,7 +30,7 @@ c = conn.cursor()
 # """)
 
 # see new table
-c.execute("""SELECT * FROM week6p""")
+c.execute("""SELECT position FROM week6p""")
 for row in c:
     print(row)
 

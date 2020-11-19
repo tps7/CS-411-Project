@@ -3,9 +3,148 @@
 #   * Rearrange models' order
 #   * Make sure each model has one field with primary_key=True
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
-#   * Remove `` lines if you wish to allow Django to create, modify, and delete the table
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+
+class passing_data(models.Model):
+    name = models.CharField(primary_key=True, max_length=30, blank=False, default='')
+    team = models.CharField(max_length=3)
+    position = models.CharField(max_length=2)
+    fantasypts = models.DecimalField(max_digits=5, decimal_places=2)
+    class Meta:
+        db_table = 'passing_data'
+
+# class Posts(models.Model):
+#     title = models.CharField(max_length=70, blank=False, default='')
+#     content = models.CharField(max_length=200,blank=False, default='')
+#     author = models.CharField(max_length=70, blank=False, default='')
+# class test(models.Model):
+#     title = models.CharField(max_length=70, blank=False, default='')
+#     content = models.CharField(max_length=200,blank=False, default='')
+#     author = models.CharField(max_length=70, blank=False, default='')
+    
+#     class Meta:
+#         app_label = 'players'
+
+class AuthGroup(models.Model):
+    name = models.CharField(unique=True, max_length=150)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_group'
+
+
+class AuthGroupPermissions(models.Model):
+    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
+    permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_group_permissions'
+        unique_together = (('group', 'permission'),)
+
+
+class AuthPermission(models.Model):
+    name = models.CharField(max_length=255)
+    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
+    codename = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_permission'
+        unique_together = (('content_type', 'codename'),)
+
+
+class AuthUser(models.Model):
+    password = models.CharField(max_length=128)
+    last_login = models.DateTimeField(blank=True, null=True)
+    is_superuser = models.IntegerField()
+    username = models.CharField(unique=True, max_length=150)
+    first_name = models.CharField(max_length=150)
+    last_name = models.CharField(max_length=150)
+    email = models.CharField(max_length=254)
+    is_staff = models.IntegerField()
+    is_active = models.IntegerField()
+    date_joined = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'auth_user'
+
+
+class AuthUserGroups(models.Model):
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+    group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_user_groups'
+        unique_together = (('user', 'group'),)
+
+
+class AuthUserUserPermissions(models.Model):
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+    permission = models.ForeignKey(AuthPermission, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'auth_user_user_permissions'
+        unique_together = (('user', 'permission'),)
+
+
+class DjangoAdminLog(models.Model):
+    action_time = models.DateTimeField()
+    object_id = models.TextField(blank=True, null=True)
+    object_repr = models.CharField(max_length=200)
+    action_flag = models.PositiveSmallIntegerField()
+    change_message = models.TextField()
+    content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
+    user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'django_admin_log'
+
+
+class DjangoContentType(models.Model):
+    app_label = models.CharField(max_length=100)
+    model = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = 'django_content_type'
+        unique_together = (('app_label', 'model'),)
+
+
+class DjangoMigrations(models.Model):
+    app = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
+    applied = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'django_migrations'
+
+
+class DjangoSession(models.Model):
+    session_key = models.CharField(primary_key=True, max_length=40)
+    session_data = models.TextField()
+    expire_date = models.DateTimeField()
+
+    class Meta:
+        managed = False
+        db_table = 'django_session'
+
+
+class MainWeek1P(models.Model):
+    player = models.CharField(max_length=100)
+    team = models.CharField(max_length=100)
+    yds = models.DecimalField(max_digits=25, decimal_places=2)
+
+    class Meta:
+        managed = False
+        db_table = 'main_week1p'
 
 
 class Week10P(models.Model):
@@ -45,9 +184,10 @@ class Week10P(models.Model):
     patattempts = models.IntegerField(db_column='patAttempts')  # Field name made lowercase.
     fantasypts = models.DecimalField(db_column='fantasyPts', max_digits=4, decimal_places=1)  # Field name made lowercase.
     ptsperdb = models.DecimalField(db_column='ptsPerDb', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    position = models.CharField(max_length=2)
 
     class Meta:
-        
+        managed = False
         db_table = 'week10p'
 
 
@@ -106,7 +246,7 @@ class Week10R(models.Model):
     ptspertouch = models.DecimalField(db_column='ptsPerTouch', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+        managed = False
         db_table = 'week10r'
 
 
@@ -147,9 +287,10 @@ class Week11P(models.Model):
     patattempts = models.IntegerField(db_column='patAttempts')  # Field name made lowercase.
     fantasypts = models.DecimalField(db_column='fantasyPts', max_digits=4, decimal_places=1)  # Field name made lowercase.
     ptsperdb = models.DecimalField(db_column='ptsPerDb', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    position = models.CharField(max_length=2)
 
     class Meta:
-        
+        managed = False
         db_table = 'week11p'
 
 
@@ -208,7 +349,7 @@ class Week11R(models.Model):
     ptspertouch = models.DecimalField(db_column='ptsPerTouch', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+        managed = False
         db_table = 'week11r'
 
 
@@ -249,9 +390,10 @@ class Week12P(models.Model):
     patattempts = models.IntegerField(db_column='patAttempts')  # Field name made lowercase.
     fantasypts = models.DecimalField(db_column='fantasyPts', max_digits=4, decimal_places=1)  # Field name made lowercase.
     ptsperdb = models.DecimalField(db_column='ptsPerDb', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    position = models.CharField(max_length=2)
 
     class Meta:
-        
+        managed = False
         db_table = 'week12p'
 
 
@@ -310,7 +452,7 @@ class Week12R(models.Model):
     ptspertouch = models.DecimalField(db_column='ptsPerTouch', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+        managed = False
         db_table = 'week12r'
 
 
@@ -351,9 +493,10 @@ class Week13P(models.Model):
     patattempts = models.IntegerField(db_column='patAttempts')  # Field name made lowercase.
     fantasypts = models.DecimalField(db_column='fantasyPts', max_digits=4, decimal_places=1)  # Field name made lowercase.
     ptsperdb = models.DecimalField(db_column='ptsPerDb', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    position = models.CharField(max_length=2)
 
     class Meta:
-        
+        managed = False
         db_table = 'week13p'
 
 
@@ -412,7 +555,7 @@ class Week13R(models.Model):
     ptspertouch = models.DecimalField(db_column='ptsPerTouch', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+        managed = False
         db_table = 'week13r'
 
 
@@ -453,9 +596,10 @@ class Week14P(models.Model):
     patattempts = models.IntegerField(db_column='patAttempts')  # Field name made lowercase.
     fantasypts = models.DecimalField(db_column='fantasyPts', max_digits=4, decimal_places=1)  # Field name made lowercase.
     ptsperdb = models.DecimalField(db_column='ptsPerDb', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    position = models.CharField(max_length=2)
 
     class Meta:
-        
+        managed = False
         db_table = 'week14p'
 
 
@@ -514,7 +658,7 @@ class Week14R(models.Model):
     ptspertouch = models.DecimalField(db_column='ptsPerTouch', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+        managed = False
         db_table = 'week14r'
 
 
@@ -555,9 +699,10 @@ class Week15P(models.Model):
     patattempts = models.IntegerField(db_column='patAttempts')  # Field name made lowercase.
     fantasypts = models.DecimalField(db_column='fantasyPts', max_digits=4, decimal_places=1)  # Field name made lowercase.
     ptsperdb = models.DecimalField(db_column='ptsPerDb', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    position = models.CharField(max_length=2)
 
     class Meta:
-        
+        managed = False
         db_table = 'week15p'
 
 
@@ -616,7 +761,7 @@ class Week15R(models.Model):
     ptspertouch = models.DecimalField(db_column='ptsPerTouch', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+        managed = False
         db_table = 'week15r'
 
 
@@ -657,9 +802,10 @@ class Week16P(models.Model):
     patattempts = models.IntegerField(db_column='patAttempts')  # Field name made lowercase.
     fantasypts = models.DecimalField(db_column='fantasyPts', max_digits=4, decimal_places=1)  # Field name made lowercase.
     ptsperdb = models.DecimalField(db_column='ptsPerDb', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    position = models.CharField(max_length=2)
 
     class Meta:
-        
+        managed = False
         db_table = 'week16p'
 
 
@@ -718,7 +864,7 @@ class Week16R(models.Model):
     ptspertouch = models.DecimalField(db_column='ptsPerTouch', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+        managed = False
         db_table = 'week16r'
 
 
@@ -759,9 +905,10 @@ class Week17P(models.Model):
     patattempts = models.IntegerField(db_column='patAttempts')  # Field name made lowercase.
     fantasypts = models.DecimalField(db_column='fantasyPts', max_digits=4, decimal_places=1)  # Field name made lowercase.
     ptsperdb = models.DecimalField(db_column='ptsPerDb', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    position = models.CharField(max_length=2)
 
     class Meta:
-        
+        managed = False
         db_table = 'week17p'
 
 
@@ -820,7 +967,7 @@ class Week17R(models.Model):
     ptspertouch = models.DecimalField(db_column='ptsPerTouch', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+        managed = False
         db_table = 'week17r'
 
 
@@ -861,9 +1008,10 @@ class Week1P(models.Model):
     patattempts = models.IntegerField(db_column='patAttempts')  # Field name made lowercase.
     fantasypts = models.DecimalField(db_column='fantasyPts', max_digits=4, decimal_places=1)  # Field name made lowercase.
     ptsperdb = models.DecimalField(db_column='ptsPerDb', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    position = models.CharField(max_length=2)
 
     class Meta:
-        
+        managed = False
         db_table = 'week1p'
 
 
@@ -922,7 +1070,7 @@ class Week1R(models.Model):
     ptspertouch = models.DecimalField(db_column='ptsPerTouch', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+        managed = False
         db_table = 'week1r'
 
 
@@ -963,9 +1111,10 @@ class Week2P(models.Model):
     patattempts = models.IntegerField(db_column='patAttempts')  # Field name made lowercase.
     fantasypts = models.DecimalField(db_column='fantasyPts', max_digits=4, decimal_places=1)  # Field name made lowercase.
     ptsperdb = models.DecimalField(db_column='ptsPerDb', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    position = models.CharField(max_length=2)
 
     class Meta:
-        
+        managed = False
         db_table = 'week2p'
 
 
@@ -1024,7 +1173,7 @@ class Week2R(models.Model):
     ptspertouch = models.DecimalField(db_column='ptsPerTouch', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+        managed = False
         db_table = 'week2r'
 
 
@@ -1065,9 +1214,10 @@ class Week3P(models.Model):
     patattempts = models.IntegerField(db_column='patAttempts')  # Field name made lowercase.
     fantasypts = models.DecimalField(db_column='fantasyPts', max_digits=4, decimal_places=1)  # Field name made lowercase.
     ptsperdb = models.DecimalField(db_column='ptsPerDb', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    position = models.CharField(max_length=2)
 
     class Meta:
-        
+        managed = False
         db_table = 'week3p'
 
 
@@ -1126,7 +1276,7 @@ class Week3R(models.Model):
     ptspertouch = models.DecimalField(db_column='ptsPerTouch', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+        managed = False
         db_table = 'week3r'
 
 
@@ -1167,9 +1317,10 @@ class Week4P(models.Model):
     patattempts = models.IntegerField(db_column='patAttempts')  # Field name made lowercase.
     fantasypts = models.DecimalField(db_column='fantasyPts', max_digits=4, decimal_places=1)  # Field name made lowercase.
     ptsperdb = models.DecimalField(db_column='ptsPerDb', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    position = models.CharField(max_length=2)
 
     class Meta:
-        
+        managed = False
         db_table = 'week4p'
 
 
@@ -1228,7 +1379,7 @@ class Week4R(models.Model):
     ptspertouch = models.DecimalField(db_column='ptsPerTouch', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+        managed = False
         db_table = 'week4r'
 
 
@@ -1269,9 +1420,10 @@ class Week5P(models.Model):
     patattempts = models.IntegerField(db_column='patAttempts')  # Field name made lowercase.
     fantasypts = models.DecimalField(db_column='fantasyPts', max_digits=4, decimal_places=1)  # Field name made lowercase.
     ptsperdb = models.DecimalField(db_column='ptsPerDb', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    position = models.CharField(max_length=2)
 
     class Meta:
-        
+        managed = False
         db_table = 'week5p'
 
 
@@ -1330,7 +1482,7 @@ class Week5R(models.Model):
     ptspertouch = models.DecimalField(db_column='ptsPerTouch', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+        managed = False
         db_table = 'week5r'
 
 
@@ -1371,9 +1523,10 @@ class Week6P(models.Model):
     patattempts = models.IntegerField(db_column='patAttempts')  # Field name made lowercase.
     fantasypts = models.DecimalField(db_column='fantasyPts', max_digits=4, decimal_places=1)  # Field name made lowercase.
     ptsperdb = models.DecimalField(db_column='ptsPerDb', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    position = models.CharField(max_length=2)
 
     class Meta:
-        
+        managed = False
         db_table = 'week6p'
 
 
@@ -1432,7 +1585,7 @@ class Week6R(models.Model):
     ptspertouch = models.DecimalField(db_column='ptsPerTouch', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+        managed = False
         db_table = 'week6r'
 
 
@@ -1473,9 +1626,10 @@ class Week7P(models.Model):
     patattempts = models.IntegerField(db_column='patAttempts')  # Field name made lowercase.
     fantasypts = models.DecimalField(db_column='fantasyPts', max_digits=4, decimal_places=1)  # Field name made lowercase.
     ptsperdb = models.DecimalField(db_column='ptsPerDb', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    position = models.CharField(max_length=2)
 
     class Meta:
-        
+        managed = False
         db_table = 'week7p'
 
 
@@ -1534,7 +1688,7 @@ class Week7R(models.Model):
     ptspertouch = models.DecimalField(db_column='ptsPerTouch', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+        managed = False
         db_table = 'week7r'
 
 
@@ -1575,9 +1729,10 @@ class Week8P(models.Model):
     patattempts = models.IntegerField(db_column='patAttempts')  # Field name made lowercase.
     fantasypts = models.DecimalField(db_column='fantasyPts', max_digits=4, decimal_places=1)  # Field name made lowercase.
     ptsperdb = models.DecimalField(db_column='ptsPerDb', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    position = models.CharField(max_length=2)
 
     class Meta:
-        
+        managed = False
         db_table = 'week8p'
 
 
@@ -1636,7 +1791,7 @@ class Week8R(models.Model):
     ptspertouch = models.DecimalField(db_column='ptsPerTouch', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+        managed = False
         db_table = 'week8r'
 
 
@@ -1677,9 +1832,10 @@ class Week9P(models.Model):
     patattempts = models.IntegerField(db_column='patAttempts')  # Field name made lowercase.
     fantasypts = models.DecimalField(db_column='fantasyPts', max_digits=4, decimal_places=1)  # Field name made lowercase.
     ptsperdb = models.DecimalField(db_column='ptsPerDb', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
+    position = models.CharField(max_length=2)
 
     class Meta:
-        
+        managed = False
         db_table = 'week9p'
 
 
@@ -1738,5 +1894,5 @@ class Week9R(models.Model):
     ptspertouch = models.DecimalField(db_column='ptsPerTouch', max_digits=4, decimal_places=2, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
-        
+        managed = False
         db_table = 'week9r'
