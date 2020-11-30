@@ -31,7 +31,7 @@ def player(request, pk):
     print(type(name))
     plyer = name['name']
     collection = db['passing_data']
-    plyer.replace(".", "")
+    plyer = plyer.replace(".", "")
     data = {}
 
     M = collection.find({"Player_Name" : plyer}, {"_id" : 0})
