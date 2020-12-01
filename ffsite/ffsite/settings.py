@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks',
     'stats',
+    'django_tables2'
 ]
 
 MIDDLEWARE = [
@@ -83,6 +84,10 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
+    },
+    'ffnosql': {
+        'ENGINE': 'djongo',
+        'NAME': 'ffnosql'
     }
 }
 

@@ -3,6 +3,10 @@ from stats.models import Passer, RushRec
 from stats.forms import PasserForm, RushRecForm
 from django.views.generic import ListView, DetailView
 from django.db import connection
+from .tables import PasserTable, PasserFullTable, FlexTable, FlexFullTable
+from django_tables2 import RequestConfig
+from pymongo import MongoClient
+from mongoengine import *
 
 # Create your views here.
 
@@ -29,7 +33,7 @@ class RushRecDetailView(DetailView):
 	template_name = "rushrec_detail.html"
 
 def home_redirect(request):
-	return redirect("passer_index")
+	return redirect("search_passer")
 
 def addPasser(request):
 	if request.method == "POST":
@@ -116,61 +120,177 @@ def deleteRushRec(request, pk, template_name="delete_rushrec.html"):
 	return render(request, template_name, {"object": rushrec})
 
 def searchPasser(request, template_name="search_passer.html"):
+	table = PasserTable(Passer.objects.all())
+	RequestConfig(request, paginate={"per_page": 25}).configure(table)
 	if request.method == "GET":
 		player = request.GET.get("player","")
-		week = request.GET.get("week","")
+		weekStart = request.GET.get("weekStart","")
+		weekEnd = request.GET.get("weekEnd","")
 		team = request.GET.get("team","")
-		if player == "" and week == "" and team == "":
-			return render(request, template_name, {"result": Passer.objects.all()})
-		query = "SELECT * FROM passer"
+		if player == "" and weekStart == "" and weekEnd == "" and team == "":
+			return render(request, template_name, {"table": table, "player": player,
+				"weekStart": weekStart, "weekEnd": weekEnd, "team": team})
+		query = "SELECT * FROM passer WHERE "
 		values = []
-		query = query + " WHERE "
 		if player != "":
 			values.append("%"+player+"%")
 			query = query + "player LIKE %s"
-		if week != "":
-			values.append(week)
+		if weekStart != "":
+			values.append(weekStart)
 			if player != "":
 				query = query + " AND "
-			query = query + "week=%s"
+			query = query + "week>=%s"
+		if weekEnd != "":
+			values.append(weekEnd)
+			if player != "" or weekStart != "":
+				query = query + " AND "
+			query = query + "week<=%s"
 		if team != "":
 			values.append(team)
-			if player != "" or week != "":
+			if player != "" or weekStart != "" or weekEnd != "":
 				query = query + " AND "
 			query = query + "team=%s"
-		return render(request, template_name, {"result": Passer.objects.raw(query, values)})
+		table = PasserTable(Passer.objects.raw(query, values))
+		RequestConfig(request, paginate={"per_page": 25}).configure(table)
+		return render(request, template_name, {"table": table, "player": player,
+				"weekStart": weekStart, "weekEnd": weekEnd, "team": team})
 	else:
-		return render(request, template_name, {"result": Passer.objects.all()})
+		return render(request, template_name, {"table": table, "player": "",
+				"weekStart": "", "weekEnd": "", "team": ""})
 
 def searchRushRec(request, template_name="search_rushrec.html"):
+	table = FlexTable(RushRec.objects.all())
+	RequestConfig(request, paginate={"per_page": 25}).configure(table)
 	if request.method == "GET":
 		player = request.GET.get("player","")
-		week = request.GET.get("week","")
+		weekStart = request.GET.get("weekStart","")
+		weekEnd = request.GET.get("weekEnd","")
 		team = request.GET.get("team","")
 		position = request.GET.get("position","")
-		if player == "" and week == "" and team == "" and position == "":
-			return render(request, template_name, {"result": RushRec.objects.all()})
-		query = "SELECT * FROM rushrec"
+		if player == "" and weekStart == "" and weekEnd == "" and team == "" and position == "":
+			return render(request, template_name, {"table": table, "player": player,
+				"weekStart": weekStart, "weekEnd": weekEnd, "team": team, "position": position})
+		query = "SELECT * FROM rushrec WHERE "
 		values = []
-		query = query + " WHERE "
 		if player != "":
 			values.append("%"+player+"%")
 			query = query + "player LIKE %s"
-		if week != "":
-			values.append(week)
+		if weekStart != "":
+			values.append(weekStart)
 			if player != "":
 				query = query + " AND "
-			query = query + "week=%s"
+			query = query + "week>=%s"
+		if weekEnd != "":
+			values.append(weekEnd)
+			if player != "" or weekStart != "":
+				query = query + " AND "
+			query = query + "week<=%s"
 		if team != "":
 			values.append(team)
-			if player != "" or week != "":
+			if player != "" or weekStart != "" or weekEnd != "":
 				query = query + " AND "
 			query = query + "team=%s"
 		if position != "":
 			values.append(position)
-			if player != "" or week != "" or team != "":
+			if player != "" or weekStart != "" or weekEnd != "" or team != "":
 				query = query + "AND "
 			query = query + "position=%s"
-		return render(request, template_name, {"result": RushRec.objects.raw(query, values)})
+		table = FlexTable(RushRec.objects.raw(query, values))
+		RequestConfig(request, paginate={"per_page": 25}).configure(table)
+		return render(request, template_name, {"table": table, "player": player,
+				"weekStart": weekStart, "weekEnd": weekEnd, "team": team, "position": position})
 	else:
-		return render(request, template_name, {"result": RushRec.objects.all()})
+		return render(request, template_name, {"table": table, "player": "",
+				"weekStart": "", "weekEnd": "", "team": "", "position": ""})
+
+def detailPasser(request, template_name="passer_detail.html"):
+	table = PasserFullTable(Passer.objects.all())
+	RequestConfig(request, paginate={"per_page": 25}).configure(table)
+	if request.method == "GET":
+		player = request.GET.get("player","")
+		weekStart = request.GET.get("weekStart","")
+		weekEnd = request.GET.get("weekEnd","")
+		if weekStart == "":
+			weekStart = "1"
+		if weekEnd == "":
+			weekEnd = "17"
+
+		connect()
+		client = MongoClient()
+		db = client.ffnosql
+		collection = db.games
+		pipeline = [
+			{"$match": {"player": player.replace(".",""), "week": {"$gte":int(weekStart), "$lte":int(weekEnd)}}},
+			{"$group": {"_id": "$player", "sumPts": {"$sum": "$fantasyPts"}, "numGames": {"$sum": "$games"}}}
+		]
+		result = list(db.games.aggregate(pipeline))
+		if len(result) < 1:
+			return redirect("search_passer")
+		result = result[0]
+
+		query = "SELECT * FROM passer WHERE player=%s AND week>=%s AND week<=%s"
+		values = [player, weekStart, weekEnd]
+		table = PasserFullTable(Passer.objects.raw(query, values))
+		RequestConfig(request, paginate={"per_page": 25}).configure(table)
+
+		with connection.cursor() as cursor:
+			query2 = "SELECT ptsRank FROM (SELECT player, SUM(fantasyPts) AS sumPts, RANK() OVER (ORDER BY sumPts DESC) AS ptsRank FROM passer WHERE week>=%s AND week<=%s GROUP BY player ORDER BY ptsRank) AS ranked WHERE player=%s"
+			values2 = [weekStart, weekEnd, player]
+			cursor.execute(query2, values2)
+			rank = cursor.fetchone()[0]
+
+		return render(request, template_name, {"table": table, "player": player,
+				"weekStart": weekStart, "weekEnd": weekEnd, "avgPts": round(result["sumPts"]/result["numGames"],2),
+				"numGames": result["numGames"], "rank": rank})
+	else:
+		return render(request, template_name, {"table": table, "player": "",
+				"weekStart": "1", "weekEnd": "17", "avgPts": 0, "numGames": 0})
+
+def detailRushRec(request, template_name="rushrec_detail.html"):
+	table = FlexFullTable(RushRec.objects.all())
+	RequestConfig(request, paginate={"per_page": 25}).configure(table)
+	if request.method == "GET":
+		player = request.GET.get("player","")
+		weekStart = request.GET.get("weekStart","")
+		weekEnd = request.GET.get("weekEnd","")
+		if weekStart == "":
+			weekStart = "1"
+		if weekEnd == "":
+			weekEnd = "17"
+
+		connect()
+		client = MongoClient()
+		db = client.ffnosql
+		collection = db.games
+		pipeline = [
+			{"$match": {"player": player.replace(".",""), "week": {"$gte":int(weekStart), "$lte":int(weekEnd)}}},
+			{"$group": {"_id": "$player", "sumPts": {"$sum": "$fantasyPts"}, "numGames": {"$sum": "$games"}}}
+		]
+		result = list(db.games.aggregate(pipeline))
+		if len(result) < 1:
+			return redirect("search_rushrec")
+		result = result[0]
+
+		query = "SELECT * FROM rushrec WHERE player=%s AND week>=%s AND week<=%s"
+		values = [player, weekStart, weekEnd]
+		table = FlexFullTable(RushRec.objects.raw(query, values))
+		RequestConfig(request, paginate={"per_page": 25}).configure(table)
+
+		with connection.cursor() as cursor:
+			query2 = "SELECT ptsRank FROM (SELECT player, SUM(fantasyPts) AS sumPts, RANK() OVER (ORDER BY sumPts DESC) AS ptsRank FROM rushrec WHERE week>=%s AND week<=%s GROUP BY player ORDER BY ptsRank) AS ranked WHERE player=%s"
+			values2 = [weekStart, weekEnd, player]
+			cursor.execute(query2, values2)
+			rank = cursor.fetchone()[0]
+			cursor.execute("SELECT position FROM rushrec WHERE player=%s", [player])
+			position = cursor.fetchone()[0]
+			query3 = "SELECT ptsRank FROM (SELECT player, SUM(fantasyPts) AS sumPts, RANK() OVER (ORDER BY sumPts DESC) AS ptsRank FROM rushrec WHERE week>=%s AND week<=%s AND position=%s GROUP BY player ORDER BY ptsRank) AS ranked WHERE player=%s"
+			values3 = [weekStart, weekEnd, position, player]
+			cursor.execute(query3, values3)
+			rankPos = cursor.fetchone()[0]
+
+		return render(request, template_name, {"table": table, "player": player,
+				"weekStart": weekStart, "weekEnd": weekEnd, "avgPts": round(result["sumPts"]/result["numGames"],2),
+				"numGames": result["numGames"], "rank": rank, "rankPos": rankPos, "position": position})
+	else:
+		return render(request, template_name, {"table": table, "player": "",
+				"weekStart": "1", "weekEnd": "17", "avgPts": 0, "numGames": 0, "rank": 0, "rankPos": 0, "position": ""})
