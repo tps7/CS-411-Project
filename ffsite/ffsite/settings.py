@@ -79,10 +79,16 @@ WSGI_APPLICATION = 'ffsite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+<<<<<<< HEAD
         # 'NAME': 'ffdb',
         'NAME' : 'ffdb',
         'USER': 'root',
         'PASSWORD': '2Tims',
+=======
+        'NAME': 'ffdb',
+        'USER': 'root',
+        'PASSWORD': '',
+>>>>>>> origin/demo
         'HOST': 'localhost',
         'PORT': '3306',
     },

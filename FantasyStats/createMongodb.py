@@ -15,7 +15,11 @@ def csv_to_dictPassing(w):
     """
     input: a string w representing what week we are on 
     """
+<<<<<<< HEAD
     reader = csv.DictReader(open('FantasyStats/Week' + w + '/fantasy-stats-passing.csv'))
+=======
+    reader = csv.DictReader(open('Week' + w + '/fantasy-stats-passing.csv'))
+>>>>>>> origin/demo
     result = []
     toRemove = ["ezAtt","ezTds","ezInts","ezPct","ezTdPct","rzRushCarries","rzRushTds","rzRushPct","i5RushCarries","i5RushTds","i5RushPct"]
     toString = ["player","team"]
@@ -56,7 +60,11 @@ def csv_to_dictFlex(w):
     """
     input: a string w representing what week we are on 
     """
+<<<<<<< HEAD
     reader = csv.DictReader(open('FantasyStats/Week' + w + '/fantasy-stats-receiving.csv'))
+=======
+    reader = csv.DictReader(open('Week' + w + '/fantasy-stats-receiving.csv'))
+>>>>>>> origin/demo
     result = []
     toRemove = ["rzRecTarg","rzRecRec","rzRecTds","rzRecTargPct","rzRecRecPct","rzRecTdPct","ezRecTarg","ezRecTds","ezRecTargPct","ezRecRecPct","ezRecTdPct","rzRushCarries","rzRushTds","rzRushPct","rzRushTdPct","i5RushCarries","i5RushTds","i5RushPct","i5RushTdPct"]
     toString = ["player","team","position"]
