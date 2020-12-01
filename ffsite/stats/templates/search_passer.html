@@ -1,0 +1,78 @@
+{% load widget_tweaks %}
+{% load django_tables2 %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Passing Stats</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <style type="text/css">
+        <style>
+    </style>
+    </style>
+</head>
+<body>
+<form method ="get" novalidate>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-1 col-xs-1 col-sm-1"></div>
+        <div class="col-md-10 col-xs-10 col-sm-10 ">
+            <br />
+            <h3 class="round3" style="text-align:center;">Passing Stats</h3>
+            <h6 style="text-align:center"><a href="/pass/">Edit</a></h6>
+            <h6 style="text-align:center"><a href="/rushrec/search">View Receiving Stats</a></h6>
+            <br />
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1 col-xs-1 col-sm-1"></div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            Player Name:
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            Week Range (Start):
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            Week Range (End):
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            Team:
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1 col-xs-1 col-sm-1"></div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <input type="text" name="player" value="{{player}}">
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <input type="text" name="weekStart" value="{{weekStart}}">
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <input type="text" name="weekEnd" value="{{weekEnd}}">
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <input type="text" name="team" value="{{team}}">
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-1 col-xs-1 col-sm-1"></div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+</div>
+</form>
+<br>
+
+{% render_table table %}
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+</body>
+</html>

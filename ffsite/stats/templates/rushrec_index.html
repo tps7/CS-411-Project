@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12 col-xs-12 col-sm-12">
+            <h3 class="round3" style="text-align:center;">Rushing/Receiving Stats</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-xs-12 col-sm-12" style="text-align:center;">
+            <a href="/rushrec/search/">Search</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-11 col-xs-11 col-sm-11"></div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <br />
+            <a href="{% url 'add_rushrec' %}">
+                <button type="button" class="btn btn-success">
+                    Add
+                </button>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+
+                <li class="list-group-item ">
+                    <b>Name</b> <span class="badge"></span>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    <b>Week</b>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    <b>Team</b>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    <b>Position</b>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    <b>Rec/Targets</b>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    <b>Rec Yards</b>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    <b>Rec TD</b>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    <b>Rush Att</b>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    <b>Rush Yds</b>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    <b>Rush TD</b>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    <b>Fantasy Pts</b>
+                </li>
+            </ul>
+            <br>
+        </div>
+    </div>
+    {% for rushrec in rushrec_list %}
+    <div class="row">
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+
+                <li class="list-group-item ">
+                    {{ rushrec.player }}<span class="badge"></span>
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    Week {{ rushrec.week }}
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    {{ rushrec.team }}
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    {{ rushrec.position }}
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    {{ rushrec.recRec }}/{{rushrec.recTarg}}
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    {{ rushrec.recYds }}
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    {{ rushrec.recTds }}
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    {{ rushrec.rushCarries }}
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    {{ rushrec.rushYds }}
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    {{ rushrec.rushTds }}
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1">
+            <ul class="list-group">
+                <li class="list-group-item ">
+                    {{ rushrec.fantasyPts }}
+                </li>
+            </ul>
+            <br>
+        </div>
+        <div class="col-md-1">
+            <a href="{% url 'edit_rushrec' rushrec.pk %}">
+                <button type="button" class="btn btn-info">
+                    Edit</span>
+                </button>
+                <a href="{% url 'delete_rushrec' rushrec.pk %}">
+                <button type="button" class="btn btn-danger">
+                    Delete</span>
+                </button>
+            </a>
+            </a>
+        </div>
+        <div class="col-md-1 col-xs-1 col-sm-1"></div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
