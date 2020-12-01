@@ -1,9 +1,5 @@
 from django.db import models
 
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/demo
 class Passer(models.Model):
 	player = models.CharField(max_length=50)
 	week = models.IntegerField()
@@ -39,10 +35,6 @@ class Passer(models.Model):
 		return [(field.verbose_name, field.value_from_object(self)) for field in self.__class__._meta.fields]
 
 	class Meta:
-<<<<<<< HEAD
-		managed = False
-=======
->>>>>>> origin/demo
 		db_table = "passer"
 
 class RushRec(models.Model):

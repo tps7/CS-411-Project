@@ -33,10 +33,6 @@ class RushRecDetailView(DetailView):
 	template_name = "rushrec_detail.html"
 
 def home_redirect(request):
-<<<<<<< HEAD
-	print('aljdf')
-=======
->>>>>>> origin/demo
 	return redirect("search_passer")
 
 def addPasser(request):
@@ -238,12 +234,7 @@ def detailPasser(request, template_name="passer_detail.html"):
 		RequestConfig(request, paginate={"per_page": 25}).configure(table)
 
 		with connection.cursor() as cursor:
-<<<<<<< HEAD
-			#SELECT ptsRank FROM (SELECT player, SUM(fantasyPts) AS sumPts, RANK() OVER (ORDER BY sumPts DESC) AS ptsRank FROM passer WHERE week>=6 AND week<=6 GROUP BY player ORDER BY ptsRank) AS ranked WHERE player=6
 			query2 = "SELECT ptsRank FROM (SELECT player, SUM(fantasyPts) AS sumPts, RANK() OVER (ORDER BY SUM(fantasyPts) DESC) AS ptsRank FROM passer WHERE week>=%s AND week<=%s GROUP BY player ORDER BY ptsRank) AS ranked WHERE player=%s"
-=======
-			query2 = "SELECT ptsRank FROM (SELECT player, SUM(fantasyPts) AS sumPts, RANK() OVER (ORDER BY sumPts DESC) AS ptsRank FROM passer WHERE week>=%s AND week<=%s GROUP BY player ORDER BY ptsRank) AS ranked WHERE player=%s"
->>>>>>> origin/demo
 			values2 = [weekStart, weekEnd, player]
 			cursor.execute(query2, values2)
 			rank = cursor.fetchone()[0]
@@ -279,31 +270,19 @@ def detailRushRec(request, template_name="rushrec_detail.html"):
 		if len(result) < 1:
 			return redirect("search_rushrec")
 		result = result[0]
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/demo
 		query = "SELECT * FROM rushrec WHERE player=%s AND week>=%s AND week<=%s"
 		values = [player, weekStart, weekEnd]
 		table = FlexFullTable(RushRec.objects.raw(query, values))
 		RequestConfig(request, paginate={"per_page": 25}).configure(table)
 
 		with connection.cursor() as cursor:
-<<<<<<< HEAD
 			query2 = "SELECT ptsRank FROM (SELECT player, SUM(fantasyPts) AS sumPts, RANK() OVER (ORDER BY SUM(fantasyPts) DESC) AS ptsRank FROM rushrec WHERE week>=%s AND week<=%s GROUP BY player ORDER BY ptsRank) AS ranked WHERE player=%s"
-=======
-			query2 = "SELECT ptsRank FROM (SELECT player, SUM(fantasyPts) AS sumPts, RANK() OVER (ORDER BY sumPts DESC) AS ptsRank FROM rushrec WHERE week>=%s AND week<=%s GROUP BY player ORDER BY ptsRank) AS ranked WHERE player=%s"
->>>>>>> origin/demo
 			values2 = [weekStart, weekEnd, player]
 			cursor.execute(query2, values2)
 			rank = cursor.fetchone()[0]
 			cursor.execute("SELECT position FROM rushrec WHERE player=%s", [player])
 			position = cursor.fetchone()[0]
-<<<<<<< HEAD
 			query3 = "SELECT ptsRank FROM (SELECT player, SUM(fantasyPts) AS sumPts, RANK() OVER (ORDER BY SUM(fantasyPts) DESC) AS ptsRank FROM rushrec WHERE week>=%s AND week<=%s AND position=%s GROUP BY player ORDER BY ptsRank) AS ranked WHERE player=%s"
-=======
-			query3 = "SELECT ptsRank FROM (SELECT player, SUM(fantasyPts) AS sumPts, RANK() OVER (ORDER BY sumPts DESC) AS ptsRank FROM rushrec WHERE week>=%s AND week<=%s AND position=%s GROUP BY player ORDER BY ptsRank) AS ranked WHERE player=%s"
->>>>>>> origin/demo
 			values3 = [weekStart, weekEnd, position, player]
 			cursor.execute(query3, values3)
 			rankPos = cursor.fetchone()[0]
